@@ -1,0 +1,4 @@
+fastapi2/__pycache__/
+fastapi2/*.pyc
+platforme/.env
+platforme/vendor/

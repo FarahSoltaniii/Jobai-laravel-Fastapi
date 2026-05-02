@@ -1,0 +1,31 @@
+experience_years,degree,job_title,city,skill,salary
+1,Bachelor,Data Analyst,Tunis,Excel,1200
+2,Bachelor,Data Analyst,Tunis,SQL,1400
+3,Master,Data Analyst,Tunis,Python,1800
+4,Master,Data Scientist,Tunis,Python,2600
+5,Master,Data Scientist,Sfax,Python,2800
+6,PhD,Data Scientist,Tunis,Machine Learning,3500
+2,Bachelor,Web Developer,Sousse,JavaScript,1500
+3,Bachelor,Web Developer,Tunis,React,1800
+4,Master,Backend Developer,Tunis,Python,2200
+5,Master,Backend Developer,Sfax,Django,2500
+7,Master,ML Engineer,Tunis,Deep Learning,4200
+8,PhD,ML Engineer,Tunis,Deep Learning,5000
+1,Bachelor,Support Engineer,Sfax,Networking,1100
+2,Bachelor,System Admin,Sousse,Linux,1400
+4,Master,System Admin,Tunis,Cloud,2400
+6,Master,DevOps Engineer,Tunis,Docker,3200
+7,Master,DevOps Engineer,Tunis,Kubernetes,3800
+3,Bachelor,QA Engineer,Sfax,Testing,1700
+5,Master,QA Engineer,Tunis,Automation,2400
+10,PhD,AI Engineer,Tunis,Deep Learning,6500
+2,Master,Business Analyst,Tunis,Excel,1600
+4,Master,Business Analyst,Tunis,Power BI,2200
+6,Master,Project Manager,Tunis,Management,3500
+8,Master,Project Manager,Sfax,Management,4200
+3,Bachelor,Mobile Developer,Sousse,Flutter,1900
+5,Master,Mobile Developer,Tunis,Flutter,2700
+6,Master,Data Engineer,Tunis,Spark,3600
+7,Master,Data Engineer,Sfax,Python,3900
+9,PhD,Research Scientist,Tunis,AI,6000
+4,Bachelor,Frontend Developer,Tunis,React,2100

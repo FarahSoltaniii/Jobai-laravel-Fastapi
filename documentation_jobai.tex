@@ -1,0 +1,701 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{colortbl}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    urlcolor=cyan!50!black,
+    pdftitle={Documentation technique JobAI},
+    pdfauthor={OpenAI Codex}
+}
+
+\definecolor{jobnavy}{HTML}{0F172A}
+\definecolor{jobcyan}{HTML}{06B6D4}
+\definecolor{jobblue}{HTML}{2563EB}
+\definecolor{jobgreen}{HTML}{10B981}
+\definecolor{joblight}{HTML}{F8FAFC}
+\definecolor{jobgray}{HTML}{475569}
+\definecolor{codebg}{HTML}{F8FAFC}
+\definecolor{codeframe}{HTML}{CBD5E1}
+\definecolor{codered}{HTML}{BE123C}
+\definecolor{codegreen}{HTML}{15803D}
+\definecolor{codepurple}{HTML}{7C3AED}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{JobAI}
+\fancyhead[R]{Documentation technique}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\titleformat{\section}{\Large\bfseries\color{jobnavy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{jobblue}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{jobcyan}}{\thesubsubsection}{0.7em}{}
+
+\lstdefinestyle{jobstyle}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{jobblue}\bfseries,
+    commentstyle=\color{codegreen},
+    stringstyle=\color{codered},
+    numberstyle=\tiny\color{jobgray},
+    numbers=left,
+    stepnumber=1,
+    numbersep=10pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{codeframe},
+    tabsize=2,
+    captionpos=b
+}
+\lstset{style=jobstyle}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+    \fill[jobnavy] (current page.south west) rectangle (current page.north east);
+    \fill[jobblue!18] (current page.north east) circle (4cm);
+    \fill[jobcyan!18] (current page.south west) circle (5cm);
+    \draw[line width=2pt, color=white!20] ([xshift=1cm,yshift=-1cm]current page.north west) rectangle ([xshift=-1cm,yshift=1cm]current page.south east);
+\end{tikzpicture}
+
+\vspace*{2cm}
+
+\begin{center}
+{\Huge\bfseries\color{white} Documentation Technique Premium}\\[0.4cm]
+{\LARGE\bfseries\color{white} Plateforme JobAI}\\[0.6cm]
+{\Large\color{white!85} Laravel + Blade/Tailwind CSS + FastAPI + Machine Learning}\\[1.6cm]
+
+\begin{tikzpicture}
+    \node[rounded corners=18pt, fill=white, minimum width=11cm, minimum height=2.6cm] {
+        \begin{minipage}{9.7cm}
+        \centering
+        {\Large\bfseries\color{jobnavy} Pr\'ediction de salaire et gestion d'offres d'emploi}\\[0.2cm]
+        {\normalsize\color{jobgray} Rapport structur\'e avec architecture, commandes, flux m\'etier et extraits de code importants}
+        \end{minipage}
+    };
+\end{tikzpicture}
+\end{center}
+
+\vfill
+
+\begin{flushleft}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\bfseries}p{4.2cm}p{9cm}}
+Projet & JobAI \\
+Architecture & Monolithe Laravel + microservice FastAPI \\
+Frontend & Blade + Tailwind CSS + Chart.js \\
+Backend IA & FastAPI + scikit-learn + pandas \\
+Livrable & Rapport LaTeX complet \\
+Date & \today \\
+\end{tabular}
+\end{flushleft}
+
+\vfill
+\begin{center}
+{\large\color{white!80} R\'edig\'e pour documenter l'impl\'ementation r\'eelle du projet pr\'esent dans le workspace}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Pr\'esentation g\'en\'erale}
+JobAI est une plateforme web qui combine deux objectifs:
+\begin{itemize}[leftmargin=1.2cm]
+    \item estimer un salaire \`a partir d'un profil candidat;
+    \item publier et consulter des offres d'emploi.
+\end{itemize}
+
+L'application repose sur une s\'eparation claire des responsabilit\'es:
+\begin{itemize}[leftmargin=1.2cm]
+    \item \textbf{Laravel} g\`ere l'interface, les routes web, la validation c\^ot\'e serveur et la base de donn\'ees;
+    \item \textbf{Blade + Tailwind CSS} assurent le rendu frontend moderne;
+    \item \textbf{FastAPI} expose le service de pr\'ediction;
+    \item \textbf{scikit-learn} fournit le mod\`ele de machine learning utilis\'e pour estimer le salaire.
+\end{itemize}
+
+\section{Objectifs fonctionnels}
+\begin{enumerate}[leftmargin=1.2cm]
+    \item Permettre \`a un utilisateur de renseigner son exp\'erience, son dipl\^ome, son poste, sa ville et sa comp\'etence principale.
+    \item Envoyer ces donn\'ees au microservice FastAPI.
+    \item Recevoir une pr\'ediction salariale.
+    \item Sauvegarder la pr\'ediction dans la table \texttt{predictions}.
+    \item Afficher des statistiques agr\'eg\'ees par poste.
+    \item G\'erer une mini-bourse d'offres d'emploi via Laravel.
+\end{enumerate}
+
+\section{Diagramme d'architecture}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    layer/.style={rounded corners=14pt, thick, minimum width=13cm, minimum height=1.9cm, align=center},
+    ui/.style={layer, draw=jobnavy, fill=joblight},
+    app/.style={layer, draw=jobblue, fill=jobblue!8},
+    service/.style={layer, draw=jobcyan!70!black, fill=jobcyan!10},
+    data/.style={layer, draw=jobgreen!60!black, fill=jobgreen!10},
+    flow/.style={-{Latex[length=3mm]}, thick, color=jobnavy}
+]
+    \node[ui] (frontend) {\textbf{Couche pr\'esentation}\\Utilisateur + interface Blade/Tailwind CSS};
+    \node[app, below=0.9cm of frontend] (laravel) {\textbf{Couche applicative Laravel}\\Routes web, validation, contr\^oleurs, vues de r\'esultat et gestion des offres};
+    \node[service, below=0.9cm of laravel] (fastapi) {\textbf{Couche service IA}\\API FastAPI charg\'ee d'ex\'ecuter la pr\'ediction salariale};
+    \node[data, below=0.9cm of fastapi] (storage) {\textbf{Couche donn\'ees}\\MySQL (\texttt{predictions}, \texttt{job}) + mod\`ele \texttt{salary\_model.pkl} + jeu \texttt{salaries.csv}};
+
+    \draw[flow] (frontend) -- node[right]{saisie utilisateur} (laravel);
+    \draw[flow] (laravel) -- node[right]{requ\^ete HTTP JSON} (fastapi);
+    \draw[flow] (fastapi) -- node[right]{lecture du mod\`ele et inf\'erence} (storage);
+    \draw[flow] (fastapi.east) .. controls +(2.4,0) and +(2.4,0) .. node[right]{retour salaire estim\'e} (laravel.east);
+    \draw[flow] (laravel.west) .. controls +(-2.4,0) and +(-2.4,0) .. node[left]{affichage et persistance} (frontend.west);
+\end{tikzpicture}
+\caption{Architecture logique en couches du projet JobAI}
+\end{figure}
+
+\subsection{Lecture du flux}
+\begin{enumerate}[leftmargin=1.2cm]
+    \item L'utilisateur remplit le formulaire de pr\'ediction sur l'interface Blade.
+    \item Laravel valide les champs.
+    \item Laravel appelle FastAPI via HTTP.
+    \item FastAPI charge le mod\`ele \texttt{salary\_model.pkl} et calcule la pr\'ediction.
+    \item Laravel enregistre la valeur pr\'edite en base.
+    \item La vue \texttt{result.blade.php} affiche le salaire estim\'e.
+\end{enumerate}
+
+\section{Tableau des commandes}
+\renewcommand{\arraystretch}{1.4}
+\begin{longtable}{p{3.5cm}p{4.5cm}p{7cm}}
+\toprule
+\textbf{Bloc} & \textbf{Commande} & \textbf{R\^ole} \\
+\midrule
+\endhead
+Laravel & \texttt{php artisan serve} & D\'emarre le serveur web Laravel local. \\
+Laravel & \texttt{php artisan migrate} & Cr\'ee les tables de base de donn\'ees, dont \texttt{predictions}. \\
+Laravel & \texttt{php artisan route:list} & Affiche les routes disponibles du projet. \\
+Laravel & \texttt{npm install} & Installe les d\'ependances frontend si Vite est utilis\'e. \\
+Laravel & \texttt{npm run dev} & Lance le bundler frontend en mode d\'eveloppement. \\
+FastAPI & \texttt{pip install -r requirements.txt} & Installe FastAPI, pandas, scikit-learn et les biblioth\`eques Python. \\
+FastAPI & \texttt{python train\_model.py} & Entra\^\i ne le mod\`ele de pr\'ediction puis g\'en\`ere \texttt{salary\_model.pkl}. \\
+FastAPI & \texttt{uvicorn app:app --reload --port 8000} & D\'emarre l'API FastAPI pour la pr\'ediction. \\
+Base de donn\'ees & \texttt{php artisan tinker} & Permet de tester les mod\`eles Eloquent rapidement. \\
+Test API & \texttt{curl -X POST http://127.0.0.1:8000/predict-salary ...} & V\'erifie qu'une pr\'ediction JSON est bien retourn\'ee. \\
+\bottomrule
+\end{longtable}
+
+\section{Structure logique du projet}
+La structure du projet peut \^etre lue par blocs fonctionnels plut\^ot que sous forme de tableau, ce qui rend la logique d'ensemble plus naturelle \`a suivre.
+
+\subsection{Noyau Laravel}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{platforme/routes/web.php} centralise les routes web de l'application.
+    \item \texttt{platforme/app/Http/Controllers/PredictionController.php} orchestre la pr\'ediction, l'enregistrement et l'historique.
+    \item \texttt{platforme/app/Http/Controllers/JobController.php} pilote les actions li\'ees aux offres d'emploi.
+    \item \texttt{platforme/app/Models/Prediction.php} repr\'esente les pr\'edictions stock\'ees en base.
+    \item \texttt{platforme/app/Models/Job.php} mod\'elise les offres publi\'ees dans la plateforme.
+\end{itemize}
+
+\subsection{Couche interface}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{platforme/resources/views/welcome.blade.php} contient le formulaire principal de saisie.
+    \item \texttt{platforme/resources/views/result.blade.php} affiche le salaire calcul\'e.
+    \item \texttt{platforme/resources/views/history.blade.php} pr\'esente l'historique et les graphiques statistiques.
+    \item \texttt{platforme/resources/views/jobs.blade.php} liste les opportunit\'es disponibles.
+    \item \texttt{platforme/resources/views/admin/create-job.blade.php} permet l'ajout d'une nouvelle offre.
+\end{itemize}
+
+\subsection{Moteur d'intelligence artificielle}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{fastapi2/app.py} expose le service FastAPI de pr\'ediction.
+    \item \texttt{fastapi2/train\_model.py} entra\^\i ne le mod\`ele de machine learning.
+    \item \texttt{fastapi2/data/salaries.csv} fournit les donn\'ees utilis\'ees pour l'apprentissage.
+    \item \texttt{fastapi2/salary\_model.pkl} correspond au mod\`ele final charg\'e lors des inf\'erences.
+\end{itemize}
+
+\section{Etapes de fonctionnement du syst\`eme}
+
+\subsection{Etape 1: saisie du formulaire}
+L'utilisateur renseigne les champs suivants:
+\begin{itemize}[leftmargin=1.2cm]
+    \item ann\'ees d'exp\'erience;
+    \item dipl\^ome;
+    \item ville;
+    \item poste cibl\'e;
+    \item comp\'etence principale.
+\end{itemize}
+
+\subsection{Etape 2: validation Laravel}
+Le contr\^oleur Laravel s'assure que les champs sont pr\'esents et correctement typ\'es avant de contacter le moteur de pr\'ediction.
+
+\subsection{Etape 3: appel HTTP vers FastAPI}
+Laravel envoie un payload JSON au point d'entr\'ee \texttt{/predict-salary}.
+
+\subsection{Etape 4: pr\'ediction ML}
+FastAPI normalise les donn\'ees, construit un \texttt{DataFrame}, appelle \texttt{model.predict()} et renvoie le salaire estim\'e.
+
+\subsection{Etape 5: persistance}
+Le salaire estim\'e est enregistr\'e dans la table \texttt{predictions} pour alimenter l'historique.
+
+\subsection{Etape 6: statistiques}
+Laravel agr\`ege les pr\'edictions par \texttt{job\_title} et affiche la moyenne par poste.
+
+\section{Backend Laravel}
+
+\subsection{Routes web}
+Le fichier de routes centralise la navigation entre la page d'accueil, la pr\'ediction, l'historique et les offres d'emploi.
+
+\begin{lstlisting}[language=PHP, caption={Extrait de routes Laravel}]
+use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\JobController;
+
+Route::get('/', [PredictionController::class, 'index']);
+Route::post('/predict', [PredictionController::class, 'predict']);
+Route::get('/history', [PredictionController::class, 'history']);
+
+Route::get('/jobs', [JobController::class, 'index']);
+Route::get('/admin/jobs/create', [JobController::class, 'create']);
+Route::post('/admin/jobs/store', [JobController::class, 'store']);
+\end{lstlisting}
+
+\textbf{Explication:} ces routes lient directement les URL aux contr\^oleurs. Elles constituent la colonne vert\'ebrale du backend Laravel.
+
+\subsection{Contr\^oleur de pr\'ediction}
+Ce contr\^oleur valide la requ\^ete, appelle FastAPI et sauvegarde le r\'esultat.
+
+\begin{lstlisting}[language=PHP, caption={Extrait important de PredictionController.php}]
+public function predict(Request $request)
+{
+    $request->validate([
+        'experience_years' => 'required|numeric',
+        'degree' => 'required',
+        'job_title' => 'required',
+        'city' => 'required',
+        'skill' => 'required'
+    ]);
+
+    $response = Http::post('http://127.0.0.1:8000/predict-salary', [
+        'experience_years' => (float) $request->experience_years,
+        'degree' => $request->degree,
+        'job_title' => $request->job_title,
+        'city' => $request->city,
+        'skill' => $request->skill,
+    ]);
+
+    $salary = $response['predicted_salary'];
+
+    Prediction::create([
+        'user_id' => null,
+        'experience_years' => $request->experience_years,
+        'degree' => $request->degree,
+        'job_title' => $request->job_title,
+        'city' => $request->city,
+        'skill' => $request->skill,
+        'predicted_salary' => $salary,
+    ]);
+
+    return view('result', compact('salary'));
+}
+\end{lstlisting}
+
+\textbf{Ce que fait ce code:}
+\begin{itemize}[leftmargin=1.2cm]
+    \item applique une validation serveur;
+    \item appelle le microservice Python;
+    \item extrait la valeur \texttt{predicted\_salary};
+    \item persiste les donn\'ees dans la base;
+    \item affiche la page de r\'esultat.
+\end{itemize}
+
+\subsection{Historique des pr\'edictions}
+L'historique exploite Eloquent pour calculer une moyenne salariale par m\'etier.
+
+\begin{lstlisting}[language=PHP, caption={Agr\'egation des statistiques}]
+$predictions = Prediction::select('job_title')
+    ->selectRaw('AVG(predicted_salary) as avg_salary')
+    ->groupBy('job_title')
+    ->get();
+
+$labels = $predictions->pluck('job_title');
+$salaries = $predictions->pluck('avg_salary');
+
+return view('history', compact('predictions', 'labels', 'salaries'));
+\end{lstlisting}
+
+\textbf{Int\'er\^et:} ce bloc transforme les pr\'edictions stock\'ees en indicateurs exploitables pour le tableau de bord.
+
+\subsection{Gestion des offres d'emploi}
+Le contr\^oleur suivant permet d'ajouter de nouvelles offres dans la table \texttt{job}.
+
+\begin{lstlisting}[language=PHP, caption={Extrait de JobController.php}]
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'company' => 'required',
+        'city' => 'required',
+        'email' => 'required|email',
+        'description' => 'required'
+    ]);
+
+    Job::create($request->all());
+
+    return redirect('/jobs')->with('success', 'Job ajoute avec succes');
+}
+\end{lstlisting}
+
+\subsection{Mod\`ele Eloquent Prediction}
+\begin{lstlisting}[language=PHP, caption={Modele Prediction}]
+class Prediction extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'experience_years',
+        'degree',
+        'job_title',
+        'city',
+        'skill',
+        'predicted_salary'
+    ];
+}
+\end{lstlisting}
+
+\textbf{Explication:} la propri\'et\'e \texttt{\$fillable} autorise l'insertion de masse en s\'ecurisant les colonnes autoris\'ees.
+
+\subsection{Migration de la table predictions}
+\begin{lstlisting}[language=PHP, caption={Migration importante pour le stockage des pr\'edictions}]
+Schema::create('predictions', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('user_id')->nullable();
+    $table->float('experience_years');
+    $table->string('degree');
+    $table->string('job_title');
+    $table->string('city');
+    $table->string('skill');
+    $table->float('predicted_salary');
+    $table->timestamps();
+});
+\end{lstlisting}
+
+\section{Frontend Blade et Tailwind CSS}
+
+\subsection{Vue d'accueil et formulaire de pr\'ediction}
+La vue \texttt{welcome.blade.php} sert de page d'atterrissage et de formulaire principal. Elle combine:
+\begin{itemize}[leftmargin=1.2cm]
+    \item une navigation claire;
+    \item une mise en page responsive;
+    \item un design premium avec d\'egrad\'es, cartes et boutons modernes;
+    \item un formulaire structur\'e autour de champs \texttt{select} et \texttt{input}.
+\end{itemize}
+
+\begin{lstlisting}[language=HTML, caption={Extrait Blade/Tailwind du formulaire principal}]
+<form method="POST" action="/predict" class="space-y-4">
+    @csrf
+
+    <div>
+        <label for="experience_years"
+            class="mb-2 block text-sm font-semibold text-slate-700">
+            Annees d'experience
+        </label>
+        <input
+            id="experience_years"
+            type="number"
+            step="0.1"
+            name="experience_years"
+            class="w-full rounded-2xl border border-slate-200 bg-slate-50
+                   px-4 py-3 outline-none transition
+                   focus:border-cyan-500 focus:bg-white
+                   focus:ring-4 focus:ring-cyan-100"
+            required
+        >
+    </div>
+
+    <button type="submit"
+        class="w-full rounded-2xl bg-slate-950 px-6 py-4
+               text-sm font-semibold text-white transition hover:bg-cyan-700">
+        Lancer la prediction
+    </button>
+</form>
+\end{lstlisting}
+
+\textbf{Pourquoi ce code est important:}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{@csrf} prot\`ege la requ\^ete contre les attaques CSRF;
+    \item les classes Tailwind acc\'el\`erent le design responsive;
+    \item le formulaire envoie directement les donn\'ees \`a Laravel.
+\end{itemize}
+
+\subsection{Page de r\'esultat}
+La vue \texttt{result.blade.php} valorise la pr\'ediction obtenue et met en avant la somme estim\'ee.
+
+\begin{lstlisting}[language=HTML, caption={Bloc d'affichage du salaire estime}]
+<p class="mt-4 text-5xl font-black text-slate-950 md:text-6xl">
+    {{ number_format($salary, 0, ',', ' ') }}
+    <span class="text-2xl font-bold text-emerald-700 md:text-3xl">DT</span>
+</p>
+\end{lstlisting}
+
+\textbf{Apport UX:} le r\'esultat est lisible, central, bien hi\'erarchis\'e et coh\'erent avec une interface premium.
+
+\subsection{Tableau de bord statistique}
+La vue \texttt{history.blade.php} utilise Chart.js pour transformer des donn\'ees PHP en graphique interactif.
+
+\begin{lstlisting}[language=JavaScript, caption={Injection des donnees PHP vers Chart.js}]
+const labels = @json($labels);
+const data = @json($salaries);
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Salaire moyen (DT)',
+            data: data
+        }]
+    }
+});
+\end{lstlisting}
+
+\textbf{Id\'ee cl\'e:} Laravel pr\'epare les donn\'ees, Blade les injecte dans le JavaScript, puis Chart.js les visualise.
+
+\subsection{Vue offres d'emploi}
+La vue \texttt{jobs.blade.php} affiche les annonces sous forme de cartes modernes, tandis que \texttt{create-job.blade.php} permet l'ajout d'une nouvelle offre.
+
+\begin{lstlisting}[language=HTML, caption={Extrait Blade d'une carte offre d'emploi}]
+@foreach($jobs as $job)
+    <article class="group flex h-full flex-col rounded-[2rem] border
+                    border-white/70 bg-white p-6 shadow-sm">
+        <h2 class="mt-1 text-xl font-bold text-slate-950">{{ $job->title }}</h2>
+        <p class="mt-1 text-sm text-slate-500">{{ $job->company }}</p>
+        <span class="rounded-full bg-slate-100 px-3 py-1
+                     text-xs font-semibold text-slate-700">{{ $job->city }}</span>
+    </article>
+@endforeach
+\end{lstlisting}
+
+\section{FastAPI et mod\`ele de pr\'ediction}
+
+\subsection{Chargement du mod\`ele et des donn\'ees}
+Le microservice FastAPI charge au d\'emarrage le mod\`ele entrain\'e et le fichier CSV contenant les valeurs de r\'ef\'erence.
+
+\begin{lstlisting}[language=Python, caption={Chargement du modele et des options de formulaire}]
+MODEL_PATH = Path("salary_model.pkl")
+DATA_PATH = Path("data/salaries.csv")
+
+with open(MODEL_PATH, "rb") as f:
+    model = pickle.load(f)
+
+dataset = pd.read_csv(DATA_PATH)
+
+FORM_OPTIONS = {
+    "degree": sorted(dataset["degree"].dropna().astype(str).unique().tolist()),
+    "job_title": sorted(dataset["job_title"].dropna().astype(str).unique().tolist()),
+    "city": sorted(dataset["city"].dropna().astype(str).unique().tolist()),
+    "skill": sorted(dataset["skill"].dropna().astype(str).unique().tolist()),
+}
+\end{lstlisting}
+
+\textbf{R\^ole:} ce bloc rend l'API capable de valider les valeurs attendues et d'offrir une coh\'erence m\'etier entre les donn\'ees d'entra\^\i nement et l'inf\'erence.
+
+\subsection{Sch\'ema de requ\^ete}
+\begin{lstlisting}[language=Python, caption={Schema Pydantic pour la prediction}]
+class SalaryPredictionRequest(BaseModel):
+    experience_years: float
+    degree: str
+    job_title: str
+    city: str
+    skill: str
+\end{lstlisting}
+
+\textbf{Explication:} Pydantic structure les entr\'ees, simplifie la validation et documente implicitement l'API.
+
+\subsection{Validation et normalisation}
+\begin{lstlisting}[language=Python, caption={Fonctions de preparation des donnees}]
+def normalize(payload: dict):
+    return {
+        "experience_years": payload["experience_years"],
+        "degree": payload["degree"].strip(),
+        "job_title": payload["job_title"].strip(),
+        "city": payload["city"].strip(),
+        "skill": payload["skill"].strip(),
+    }
+
+def validate(payload: dict):
+    errors = []
+
+    if payload["experience_years"] < 0 or payload["experience_years"] > 50:
+        errors.append("experience_years must be between 0 and 50")
+
+    for f in ["degree", "job_title", "city", "skill"]:
+        if not payload[f]:
+            errors.append(f"{f} is required")
+
+    for f in ["degree", "job_title", "city", "skill"]:
+        if payload[f] not in FORM_OPTIONS[f]:
+            errors.append(f"{f} invalid value")
+
+    return errors
+\end{lstlisting}
+
+\textbf{Int\'er\^et technique:}
+\begin{itemize}[leftmargin=1.2cm]
+    \item nettoyage des cha\^\i nes;
+    \item contr\^ole des bornes sur l'exp\'erience;
+    \item v\'erification des valeurs autoris\'ees.
+\end{itemize}
+
+\subsection{Endpoint principal de pr\'ediction}
+\begin{lstlisting}[language=Python, caption={Endpoint FastAPI pour Laravel}]
+@app.post("/predict-salary")
+def predict_simple(data: SalaryPredictionRequest):
+    payload = normalize(data.model_dump())
+    prediction = predict_salary(payload)
+
+    return {
+        "predicted_salary": prediction
+    }
+\end{lstlisting}
+
+\textbf{Lecture:} Laravel appelle cet endpoint, re\c{c}oit un JSON simple et peut afficher le salaire sans transformation complexe.
+
+\subsection{Fonction d'inf\'erence}
+\begin{lstlisting}[language=Python, caption={Inference scikit-learn}]
+def predict_salary(payload: dict):
+    df = pd.DataFrame([payload])
+    pred = model.predict(df)[0]
+    return round(float(pred), 2)
+\end{lstlisting}
+
+\textbf{Point cl\'e:} la pr\'ediction repose sur une seule ligne de donn\'ees transform\'ee en \texttt{DataFrame} pour rester compatible avec le pipeline scikit-learn.
+
+\section{Script d'entra\^\i nement du mod\`ele}
+
+\subsection{Construction du pipeline ML}
+Le script \texttt{train\_model.py} cr\'ee un pipeline comprenant:
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{OneHotEncoder} pour les variables cat\'egorielles;
+    \item \texttt{passthrough} pour la variable num\'erique \texttt{experience\_years};
+    \item \texttt{RandomForestRegressor} pour la r\'egression finale.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption={Pipeline de machine learning}]
+def build_pipeline() -> Pipeline:
+    categorical_features = ["degree", "job_title", "city", "skill"]
+    numeric_features = ["experience_years"]
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features),
+            ("num", "passthrough", numeric_features),
+        ]
+    )
+
+    model = RandomForestRegressor(
+        n_estimators=300,
+        max_depth=12,
+        min_samples_split=2,
+        min_samples_leaf=1,
+        random_state=42,
+    )
+
+    return Pipeline([("preprocessor", preprocessor), ("model", model)])
+\end{lstlisting}
+
+\subsection{Entra\^\i nement et sauvegarde}
+\begin{lstlisting}[language=Python, caption={Apprentissage, evaluation et export du modele}]
+df = load_dataset()
+X = df[FEATURES]
+y = df["salary"]
+pipeline = build_pipeline()
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+pipeline.fit(X_train, y_train)
+predictions = pipeline.predict(X_test)
+
+mae = mean_absolute_error(y_test, predictions)
+r2 = r2_score(y_test, predictions)
+
+with open(MODEL_PATH, "wb") as file_handle:
+    pickle.dump(pipeline, file_handle)
+\end{lstlisting}
+
+\textbf{Analyse:}
+\begin{itemize}[leftmargin=1.2cm]
+    \item \texttt{MAE} mesure l'erreur absolue moyenne;
+    \item \texttt{R2} mesure la qualit\'e d'ajustement du mod\`ele;
+    \item le pipeline entier est s\'erialis\'e dans \texttt{salary\_model.pkl}.
+\end{itemize}
+
+\section{Contrat d'\'echange entre Laravel et FastAPI}
+\subsection{Requ\^ete envoy\'ee}
+\begin{lstlisting}[language=json, caption={Exemple de payload JSON}]
+{
+  "experience_years": 3.5,
+  "degree": "Master",
+  "job_title": "Data Scientist",
+  "city": "Tunis",
+  "skill": "Python"
+}
+\end{lstlisting}
+
+\subsection{R\'eponse retourn\'ee}
+\begin{lstlisting}[language=json, caption={Reponse JSON simplifiee}]
+{
+  "predicted_salary": 3200.75
+}
+\end{lstlisting}
+
+\section{Synth\`ese technique par couche}
+\begin{longtable}{p{3.5cm}p{4.5cm}p{6.5cm}}
+\toprule
+\textbf{Couche} & \textbf{Technologie} & \textbf{Responsabilit\'e} \\
+\midrule
+\endhead
+Interface & Blade + Tailwind CSS & Affichage, formulaire, UX premium, responsive design. \\
+Contr\^ole m\'etier & Laravel Controllers & Validation, orchestration du flux, persistance. \\
+Persistance & Eloquent + migrations & Stockage des pr\'edictions et des offres. \\
+Visualisation & Chart.js & Repr\'esentation graphique des moyennes salariales. \\
+IA / API & FastAPI + Pydantic & Exposition du service de pr\'ediction. \\
+Machine Learning & pandas + scikit-learn & Entra\^\i nement, encodage, pr\'ediction du salaire. \\
+\bottomrule
+\end{longtable}
+
+\section{Points forts du projet}
+\begin{itemize}[leftmargin=1.2cm]
+    \item architecture simple \`a comprendre et facile \`a d\'emontrer;
+    \item s\'eparation nette entre interface web et moteur de pr\'ediction;
+    \item exploitation d'un vrai pipeline machine learning;
+    \item design frontend moderne avec Tailwind CSS;
+    \item exploitation des pr\'edictions stock\'ees pour produire des statistiques.
+\end{itemize}
+
+\section{Conclusion}
+Le projet JobAI illustre une architecture hybride tr\`es pertinente pour un projet acad\'emique ou professionnel: Laravel pilote l'exp\'erience utilisateur et la logique web, tandis que FastAPI fournit une brique IA sp\'ecialis\'ee pour la pr\'ediction de salaire. Le frontend Blade/Tailwind CSS apporte une pr\'esentation moderne, et la couche machine learning permet de valoriser les donn\'ees par une estimation concr\`ete et exploitable.
+
+Ce document LaTeX regroupe les \'el\'ements les plus importants du projet: page de garde premium, diagramme d'architecture, tableau des commandes, extraits de code essentiels et explications claires des diff\'erentes \'etapes.
+
+\end{document}
